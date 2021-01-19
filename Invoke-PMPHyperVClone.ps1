@@ -9,6 +9,7 @@
     For example, choosing the "D" volume will store the VMs in "D:\VMs" on the target host. 
     If a folder exists on the target host with the same name as the VM(s) you're cloning, the script will skip the VM. You must delete or rename the folder on the target host. This is to prevent accidental clobbering.
     If VMs are running, you will be asked if you want to shut them down. Not necessary but it is recommended.
+    DCOM authentication is used instead of Kerberos because reverse lookup for 192.168.1.198 (TRX2) from TRX1 resolves to a different hostname. Known issue and Justin said he would look in to it, suspect DNS record on 192.168.1.1. This issue causes Kerberos to fail.
     Requirements:
     - SYSTEM account of source host must be local admin on target host: VMMS service runs as SYSTEM by default and that's used for Export-VM. 
         - This could be negated by exporting locally first, then copy to target host
@@ -186,16 +187,14 @@ $ImportJobs = foreach ($Job in $Jobs) {
         $CimSession = New-CimSession -ComputerName $ht["ComputerName"] -SessionOption $CimSessionOpts -ErrorAction "Stop"
 
         $VMRootPath = "{0}:\VMs\{1}" -f $ht["DriveLetter"], $ht["VMName"]
-        $VMPath = "{0}\Virtual Machines" -f $VMRootPath
         $VMCXPath = "{0}\Virtual Machines\{1}.vmcx" -f $VMRootPath, (Get-VM -Name $ht["VMName"]).VMId
         $Params = @{
             Path = $VMCXPath
             VhdDestinationPath = "{0}\Virtual Hard Disks" -f $VMRootPath
-            VirtualMachinePath = $VMPath
+            VirtualMachinePath = $VMRootPath
             SnapshotFilePath = "{0}\Snapshots" -f $VMRootPath
             Copy = $true
             GenerateNewId = $true
-            # AsJob = $true
             CimSession = $CimSession
             ErrorAction = "Stop"
         }
