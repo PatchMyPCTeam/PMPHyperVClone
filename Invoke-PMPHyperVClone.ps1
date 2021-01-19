@@ -54,6 +54,7 @@ catch {
     Write-Error -ErrorRecord $_
     Write-Warning "Are you a member of the Hyper-V Administrators group or running the script as administrator?"
     Pause
+    return
 }
 if (-not $VMs) {
     Write-Warning ("Did not choose a VM to clone to {0}, quitting" -f $ComputerName)
