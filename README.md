@@ -14,6 +14,8 @@ If VMs are running, you will be asked if you want to shut them down. Not necessa
 
 DCOM authentication is used instead of Kerberos because reverse lookup for 192.168.1.198 (TRX2) from TRX1 resolves to a different hostname. Known issue and Justin said he would look in to it, suspect DNS record on 192.168.1.1. This issue causes Kerberos to fail.
 
+![img](img/PMPHyperVClone.gif)
+
 ## Requirements
 
 - SYSTEM account of source host must be local admin on target host: VMMS service runs as SYSTEM by default and that's used for Export-VM. 
