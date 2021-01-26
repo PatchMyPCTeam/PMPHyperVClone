@@ -18,6 +18,6 @@ DCOM authentication is used instead of Kerberos because reverse lookup for 192.1
 
 - SYSTEM account of source host must be local admin on target host: VMMS service runs as SYSTEM by default and that's used for Export-VM. 
     - This could be negated by exporting locally first, then copy to target host
-- Invoking user be in the Hyper-V Administrators group on the source host or execute the script as administrator / elevated
+- The Invoking user must be in the Hyper-V Administrators group on the source host or execute the script as administrator / elevated
 
 ![img](img/1.png)
